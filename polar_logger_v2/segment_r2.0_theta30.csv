@@ -1,0 +1,435 @@
+Executing action: monitor
+Running idf_monitor in directory C:\Users\avina\OneDrive\Desktop\FYP\FYP\polar_logger_v2
+Executing "C:\Users\avina\.espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe C:\Users\avina\esp\v5.5.2\esp-idf\tools/idf_monitor.py -p COM13 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 C:\Users\avina\OneDrive\Desktop\FYP\FYP\polar_logger_v2\build\polar_logger_v2.elf C:\Users\avina\OneDrive\Desktop\FYP\FYP\polar_logger_v2\build\bootloader\bootloader.elf --force-color -m 'C:\Users\avina\.espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe' 'C:\Users\avina\esp\v5.5.2\esp-idf\tools\idf.py' '-p' 'COM13'"...
+W (25352) wifi:FTM session ends with 8 valid readings out of 8 rESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x28 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x40379d92
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x158c
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2f34
+entry 0x403c8924
+I (24) boot: ESP-IDF v5.5.2 2nd stage bootloader
+I (24) boot: compile time Mar 17 2026 15:54:41
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.3
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 2MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (62) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c090020 size=1b370h (111472) map
+I (106) esp_image: segment 1: paddr=0002b398 vaddr=3fc9b600 size=04a2ch ( 18988) load
+I (110) esp_image: segment 2: paddr=0002fdcc vaddr=40374000 size=0024ch (   588) load
+I (111) esp_image: segment 3: paddr=00030020 vaddr=42000020 size=866d8h (550616) map
+I (214) esp_image: segment 4: paddr=000b6700 vaddr=4037424c size=17310h ( 94992) load
+I (235) esp_image: segment 5: paddr=000cda18 vaddr=50000000 size=00020h (    32) load
+I (245) boot: Loaded app from partition at offset 0x10000
+I (245) boot: Disabling RNG early entropy source...
+I (255) cpu_start: Multicore app
+I (264) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (264) cpu_start: Pro cpu start user code
+I (264) cpu_start: cpu freq: 160000000 Hz
+I (266) app_init: Application information:
+I (270) app_init: Project name:     polar_logger_v2
+I (274) app_init: App version:      1
+I (278) app_init: Compile time:     Mar 17 2026 15:54:12
+I (283) app_init: ELF file SHA256:  2bea4287b...
+I (287) app_init: ESP-IDF:          v5.5.2
+I (291) efuse_init: Min chip rev:     v0.0
+I (295) efuse_init: Max chip rev:     v0.99 
+I (299) efuse_init: Chip rev:         v0.2
+I (303) heap_init: Initializing. RAM available for dynamic allocation:
+I (309) heap_init: At 3FCA3DA0 len 00045970 (278 KiB): RAM
+I (314) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (319) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (324) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (331) spi_flash: detected chip: generic
+I (333) spi_flash: flash io: dio
+W (336) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (349) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (355) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (362) main_task: Started on CPU0
+I (372) main_task: Calling app_main()
+I (402) pp: pp rom version: e7ae62f
+I (402) net80211: net80211 rom version: e7ae62f
+I (402) main_task: Returned from app_main()
+I (402) RADAR: uart_radar_task running on core 1
+I (402) CSV: csv_print_task running on core 1
+I (412) wifi:wifi driver task: 3fcab35c, prio:23, stack:6656, core=0
+I (432) wifi:wifi firmware version: ee91c8c
+I (432) wifi:wifi certification version: v7.0
+I (432) wifi:config NVS flash: enabled
+I (432) wifi:config nano formatting: disabled
+I (432) wifi:Init data frame dynamic rx buffer num: 32
+I (442) wifi:Init static rx mgmt buffer num: 5
+I (442) wifi:Init management short buffer num: 32
+I (452) wifi:Init dynamic tx buffer num: 32
+I (452) wifi:Init static tx FG buffer num: 2
+I (452) wifi:Init static rx buffer size: 1600
+I (462) wifi:Init static rx buffer num: 10
+I (462) wifi:Init dynamic rx buffer num: 32
+I (472) wifi_init: rx ba win: 6
+I (472) wifi_init: accept mbox: 6
+I (472) wifi_init: tcpip mbox: 32
+I (472) wifi_init: udp mbox: 6
+I (482) wifi_init: tcp mbox: 6
+I (482) wifi_init: tcp tx win: 5760
+I (482) wifi_init: tcp rx win: 5760
+I (492) wifi_init: tcp mss: 1440
+I (492) wifi_init: WiFi IRAM OP enabled
+I (492) wifi_init: WiFi RX IRAM OP enabled
+W (502) wifi:Password length matches WPA2 standards, authmode threshold changes from OPEN to WPA2
+R,0.379,-33.5,168
+I (512) phy_init: phy_version 711,97bcf0a2,Aug 25 2025,19:04:10
+I (562) wifi:mode : sta (ec:da:3b:67:79:10)
+I (562) wifi:enable tsf
+I (562) ESPNOW: espnow [version: 2.0] init
+I (562) WIFI_FTM: wifi_ftm_task running on core 0
+I (572) wifi:new:<6,1>, old:<1,0>, ap:<255,255>, sta:<6,1>, prof:1, snd_ch_cfg:0x0
+I (572) wifi:state: init -> auth (0xb0)
+I (572) wifi:state: auth -> assoc (0x0)
+I (582) wifi:Association refused temporarily time 1500, comeback time 1600 (TUs)
+R,0.378,-33.8,262
+R,0.377,-34.1,352
+R,0.374,-34.7,442
+R,0.375,-35.0,532
+R,0.374,-35.1,622
+R,0.372,-34.9,712
+R,0.370,-34.8,802
+R,0.368,-34.6,882
+R,0.367,-34.6,972
+R,0.365,-34.4,1062
+R,0.363,-34.3,1152
+R,0.362,-34.1,1242
+R,0.362,-34.7,1332
+R,0.363,-35.4,1422
+R,0.362,-35.7,1512
+R,0.359,-35.9,1602
+R,0.356,-35.7,1692
+R,0.354,-35.8,1772
+R,0.354,-35.9,1862
+I (2222) wifi:state: assoc -> assoc (0x0)
+I (2232) wifi:state: assoc -> run (0x10)
+I (2242) wifi:connected with ISAC_TAG, aid = 1, channel 6, 40U, bssid = 74:4d:bd:7f:20:b5
+I (2242) wifi:security: WPA2-PSK, phy: bgn, rssi: -40
+I (2252) wifi:pm start, type: 1
+
+I (2252) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (2262) wifi:set rx beacon pti, rx_bcn_pti: 0, bcn_timeout: 25000, mt_pti: 0, mt_time: 10000
+I (2272) WIFI_FTM: Connected to ISAC_TAG
+I (2272) WIFI_FTM: Responder MAC: 74:4d:bd:7f:20:b5
+R,0.357,-35.9,1951
+I (2292) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+R,0.359,-35.8,2042
+R,0.362,-35.8,2132
+R,0.364,-35.8,2222
+W (2562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 34 mSec
+W (2562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.365,-36.1,2312
+R,0.365,-36.3,2402
+W (2822) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.387 nSec, Avg RSSI: -44
+W,1.639,NAN,2490
+R,0.365,-36.4,2491
+R,0.365,-36.7,2582
+R,0.366,-37.0,2662
+W (3062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 46 mSec
+W (3072) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.367,-37.5,2752
+R,0.369,-38.0,2842
+R,0.367,-37.8,2932
+I (3282) esp_netif_handlers: sta ip: 192.168.4.2, mask: 255.255.255.0, gw: 192.168.4.1
+W (3332) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 13.57 nSec, Avg RSSI: -44
+W,1.874,NAN,3004
+R,0.367,-37.8,3022
+R,0.369,-37.6,3112
+R,0.373,-37.5,3202
+W (3562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 58 mSec
+W (3562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.371,-36.9,3292
+R,0.373,-36.7,3382
+R,0.374,-36.4,3472
+W (3842) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.611 nSec, Avg RSSI: -45
+W,1.639,NAN,3514
+R,0.375,-36.4,3552
+R,0.379,-37.0,3642
+R,0.381,-37.7,3732
+W (4062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 70 mSec
+W (4062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.385,-38.6,3822
+R,0.387,-38.9,3912
+R,0.388,-38.9,4002
+W (4352) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.499 nSec, Avg RSSI: -45
+W,1.639,NAN,4026
+R,0.390,-38.9,4092
+R,0.390,-38.9,4182
+W (4562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 81 mSec
+W (4562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.392,-38.9,4272
+R,0.392,-39.0,4362
+R,0.396,-39.4,4442
+R,0.395,-39.7,4532
+W (4862) wifi:FTM session ends with 13 valid readings out of 13 readings received, Avg raw RTT: 12.18 nSec, Avg RSSI: -45
+W,1.639,NAN,4537
+R,0.393,-39.6,4622
+R,0.393,-39.5,4712
+W (5062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 94 mSec
+W (5062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.392,-39.4,4802
+R,0.395,-39.1,4892
+R,0.394,-38.8,4982
+W (5382) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 11.830 nSec, Avg RSSI: -45
+W,1.639,NAN,5049
+R,0.394,-38.6,5072
+R,0.394,-38.6,5162
+W (5562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 104 mSec
+W (5572) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.394,-38.6,5252
+R,0.395,-38.7,5332
+R,0.393,-38.7,5422
+R,0.393,-38.8,5512
+W (5892) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.164 nSec, Avg RSSI: -45
+W,1.639,NAN,5562
+R,0.390,-38.9,5602
+R,0.390,-39.2,5692
+W (6062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 16 mSec
+W (6062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.390,-39.5,5782
+R,0.391,-39.6,5872
+R,0.392,-39.3,5962
+W (6302) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 11.941 nSec, Avg RSSI: -45
+W,1.639,NAN,5971
+R,0.393,-38.6,6052
+R,0.393,-38.6,6132
+R,0.396,-39.0,6222
+W (6562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 27 mSec
+W (6562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.404,-39.4,6312
+R,0.414,-40.1,6402
+R,0.419,-40.6,6492
+W (6832) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.499 nSec, Avg RSSI: -44
+W,1.639,NAN,6498
+R,0.417,-41.3,6582
+R,0.415,-41.5,6672
+W (7062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 39 mSec
+W (7062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.410,-41.5,6762
+R,0.408,-42.0,6852
+R,0.410,-42.6,6942
+W (7322) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.387 nSec, Avg RSSI: -45
+W,1.639,NAN,6995
+R,0.410,-42.8,7022
+R,0.415,-42.6,7112
+R,0.416,-42.3,7202
+W (7562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 52 mSec
+W (7562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.416,-42.5,7292
+R,0.416,-42.9,7382
+R,0.416,-43.2,7472
+W (7832) wifi:FTM session ends with 13 valid readings out of 13 readings received, Avg raw RTT: 11.898 nSec, Avg RSSI: -45
+W,1.639,NAN,7507
+R,0.417,-43.0,7562
+R,0.417,-42.8,7652
+W (8062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 64 mSec
+W (8062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.416,-42.5,7742
+R,0.414,-42.4,7832
+R,0.410,-42.1,7912
+R,0.404,-42.3,8002
+W (8362) wifi:FTM session ends with 11 valid readings out of 11 readings received, Avg raw RTT: 9.90 nSec, Avg RSSI: -46
+W,1.171,NAN,8034
+R,0.398,-42.7,8092
+R,0.393,-42.7,8182
+W (8562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 75 mSec
+W (8562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.389,-42.7,8272
+R,0.386,-42.8,8362
+R,0.383,-43.0,8452
+W (8862) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 11.606 nSec, Avg RSSI: -45
+W,1.639,NAN,8531
+R,0.384,-43.0,8542
+R,0.386,-43.1,8632
+R,0.389,-43.3,8722
+W (9062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 88 mSec
+W (9062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.390,-43.0,8802
+R,0.388,-42.8,8892
+R,0.387,-42.4,8982
+W (9382) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 11.941 nSec, Avg RSSI: -45
+W,1.639,NAN,9049
+R,0.385,-42.1,9072
+R,0.385,-41.7,9162
+W (9562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 100 mSec
+W (9562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.383,-41.4,9252
+R,0.381,-41.2,9342
+R,0.380,-40.7,9432
+R,0.379,-40.5,9522
+W (9882) wifi:FTM session ends with 13 valid readings out of 13 readings received, Avg raw RTT: 11.297 nSec, Avg RSSI: -46
+W,1.639,NAN,9556
+R,0.377,-40.3,9612
+R,0.377,-39.9,9692
+W (10062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 9 mSec
+W (10062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.376,-39.7,9782
+R,0.374,-39.4,9872
+R,0.374,-39.1,9962
+W (10292) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.499 nSec, Avg RSSI: -46
+W,1.874,NAN,9965
+R,0.379,-39.1,10052
+R,0.383,-39.2,10142
+R,0.387,-39.1,10232
+W (10562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 21 mSec
+W (10562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.389,-39.4,10322
+R,0.392,-39.4,10412
+W (10802) wifi:FTM session ends with 12 valid readings out of 12 readings received, Avg raw RTT: 13.150 nSec, Avg RSSI: -46
+W,1.639,NAN,10477
+R,0.396,-39.6,10502
+R,0.398,-39.6,10582
+R,0.400,-39.7,10672
+W (11062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 33 mSec
+W (11062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.407,-40.1,10762
+R,0.409,-40.3,10852
+R,0.409,-40.5,10942
+W (11322) wifi:FTM session ends with 12 valid readings out of 12 readings received, Avg raw RTT: 12.369 nSec, Avg RSSI: -45
+W,1.639,NAN,10989
+R,0.408,-40.6,11032
+R,0.403,-40.4,11122
+R,0.396,-39.8,11212
+W (11562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 45 mSec
+W (11562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.388,-39.4,11302
+R,0.386,-39.0,11392
+R,0.383,-38.4,11472
+W (11832) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 13.503 nSec, Avg RSSI: -45
+W,1.874,NAN,11500
+R,0.380,-38.0,11562
+R,0.377,-37.4,11652
+W (12062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 57 mSec
+W (12062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.376,-37.7,11742
+R,0.377,-38.0,11832
+R,0.377,-38.3,11922
+R,0.378,-38.7,12012
+W (12352) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 13.727 nSec, Avg RSSI: -45
+W,1.874,NAN,12027
+R,0.378,-39.0,12102
+R,0.379,-39.3,12192
+W (12562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 69 mSec
+W (12562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.379,-39.5,12282
+R,0.379,-39.9,12362
+R,0.380,-40.2,12452
+W (12852) wifi:FTM session ends with 13 valid readings out of 13 readings received, Avg raw RTT: 11.177 nSec, Avg RSSI: -45
+W,1.405,NAN,12525
+R,0.380,-40.4,12542
+R,0.375,-40.6,12632
+R,0.369,-40.7,12722
+W (13062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 81 mSec
+W (13062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.364,-40.9,12812
+R,0.358,-41.0,12902
+R,0.352,-41.2,12992
+W (13362) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 10.825 nSec, Avg RSSI: -45
+W,1.405,NAN,13037
+R,0.348,-41.4,13082
+R,0.342,-41.6,13162
+W (13562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 93 mSec
+W (13562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.338,-41.8,13252
+R,0.333,-41.8,13342
+R,0.329,-42.0,13432
+R,0.324,-42.1,13522
+W (13882) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 12.387 nSec, Avg RSSI: -45
+W,1.639,NAN,13548
+R,0.326,-42.3,13612
+R,0.332,-42.9,13702
+W (14062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 105 mSec
+W (14062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.342,-43.7,13792
+R,0.351,-44.3,13882
+R,0.359,-45.0,13972
+R,0.368,-45.5,14052
+W (14392) wifi:FTM session ends with 13 valid readings out of 13 readings received, Avg raw RTT: 12.18 nSec, Avg RSSI: -45
+W,1.639,NAN,14061
+R,0.373,-45.4,14142
+R,0.378,-45.3,14232
+W (14562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 15 mSec
+W (14562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.383,-45.1,14322
+R,0.387,-44.9,14412
+W (14802) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 11.718 nSec, Avg RSSI: -45
+W,1.639,NAN,14471
+R,0.391,-44.7,14502
+R,0.395,-44.5,14592
+R,0.399,-44.4,14682
+W (15062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 27 mSec
+W (15062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.400,-44.0,14772
+R,0.402,-43.6,14862
+R,0.403,-43.1,14942
+W (15312) wifi:FTM session ends with 13 valid readings out of 13 readings received, Avg raw RTT: 10.576 nSec, Avg RSSI: -46
+W,1.171,NAN,14983
+R,0.403,-42.8,15032
+R,0.403,-42.4,15122
+R,0.405,-42.0,15212
+W (15562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 37 mSec
+W (15562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.406,-41.7,15302
+R,0.406,-41.3,15392
+R,0.407,-41.0,15482
+W (15822) wifi:FTM session ends with 14 valid readings out of 14 readings received, Avg raw RTT: 11.495 nSec, Avg RSSI: -45
+W,1.405,NAN,15494
+R,0.408,-40.7,15572
+R,0.409,-40.4,15662
+W (16062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 51 mSec
+W (16062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.415,-40.4,15752
+R,0.417,-40.7,15842
+R,0.416,-40.8,15922
+W (16342) wifi:FTM session ends with 12 valid readings out of 12 readings received, Avg raw RTT: 13.411 nSec, Avg RSSI: -45
+W,1.639,NAN,16009
+R,0.413,-41.0,16009
+R,0.410,-40.8,16102
+R,0.410,-40.4,16192
+W (16562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 63 mSec
+W (16562) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.416,-39.3,16282
+R,0.422,-38.3,16372
+R,0.419,-37.4,16462
+W (16852) wifi:FTM session ends with 11 valid readings out of 11 readings received, Avg raw RTT: 13.351 nSec, Avg RSSI: -44
+W,1.639,NAN,16519
+R,0.411,-36.6,16552
+R,0.400,-35.3,16642
+R,0.393,-34.4,16722
+W (17062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 74 mSec
+W (17062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.386,-33.5,16812
+R,0.380,-32.6,16902
+R,0.376,-32.0,16992
+W (17362) wifi:FTM session ends with 12 valid readings out of 12 readings received, Avg raw RTT: 15.103 nSec, Avg RSSI: -44
+W,2.108,NAN,17030
+R,0.374,-31.6,17082
+R,0.372,-31.0,17172
+W (17562) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 84 mSec
+W (17572) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
+R,0.370,-30.5,17262
+R,0.369,-30.1,17352
+R,0.367,-29.7,17442
+R,0.364,-29.3,17532
+W (17872) wifi:FTM session ends with 12 valid readings out of 12 readings received, Avg raw RTT: 14.843 nSec, Avg RSSI: -44
+W,2.108,NAN,17542
+R,0.358,-29.4,17612
+R,0.352,-28.9,17702
+W (18062) wifi:Starting FTM session with 74:4d:bd:7f:20:b5 in 99 mSec
+W (18062) wifi:Mode: non-ASAP, Bursts: 2, FTM's per burst: 8, Burst Period: 200mSec, Burst Duration: 32000uSec
