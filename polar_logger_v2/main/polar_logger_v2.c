@@ -342,6 +342,9 @@ static void csv_print_task(void *arg)
  * ═════════════════════════════════════════════════════════════════*/
 void app_main(void)
 {
+    /* ── Silence ALL log output — only our printf CSV lines survive ── */
+    esp_log_level_set("*", ESP_LOG_NONE);
+
     /* Create the shared sensor queue */
     sensor_queue = xQueueCreate(QUEUE_LEN, sizeof(sensor_event_t));
     assert(sensor_queue != NULL);

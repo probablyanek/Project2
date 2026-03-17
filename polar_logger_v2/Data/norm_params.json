@@ -1,0 +1,19 @@
+{
+    "R_MIN_M": 0.0,
+    "R_MAX_M": 6.0,
+    "THETA_MIN_DEG": -60.0,
+    "THETA_MAX_DEG": 60.0,
+    "WINDOW_SIZE": 5,
+    "NUM_FEATURES": 5,
+    "features": [
+        "radar_r_norm",
+        "radar_theta_norm",
+        "radar_fresh",
+        "wifi_r_norm",
+        "wifi_fresh"
+    ],
+    "labels": [
+        "gt_r_norm",
+        "gt_theta_norm"
+    ]
+}
