@@ -500,10 +500,12 @@ static void ml_inference_task(void *arg)
         g_fused_r_m       = pred_r_m;
         g_fused_theta_deg = pred_theta_deg;
 
-        /* ── Print fused output ── */
-        printf("FUSED,%.3f,%.1f,%lld,%lld\n",
+        /* ── Print verbose fused output ── */
+        printf("FUSED_V2,%lld,%lld,%.3f,%.1f,%.3f,%.1f,%.1f,%.3f,%.1f\n",
+               event.timestamp_ms, inference_us,
                pred_r_m, pred_theta_deg,
-               event.timestamp_ms, inference_us);
+               feat_radar_r, feat_radar_theta, feat_radar_fresh,
+               feat_wifi_r, feat_wifi_fresh);
 
         vTaskDelay(pdMS_TO_TICKS(1));
     }
