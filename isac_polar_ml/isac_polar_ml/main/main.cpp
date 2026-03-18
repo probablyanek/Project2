@@ -17,6 +17,7 @@
 #include <cstdio>
 #include <cmath>
 #include <cstring>
+#include <atomic>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -42,6 +43,10 @@
 #include "polar_model_data.h"
 #include "polar_norm_params.h"
 
+/* ───────────── SSD1306 OLED ─────────────── */
+#include "ssd1306.h"
+#include "font8x8_basic.h"
+
 /* ───────────────────────── Constants ────────────────────────── */
 static const char *TAG = "ISAC_FUSION";
 
@@ -50,6 +55,10 @@ static const char *TAG = "ISAC_FUSION";
 
 #define RADAR_TXD   GPIO_NUM_17
 #define RADAR_RXD   GPIO_NUM_16
+
+/* OLED I2C Pins */
+#define I2C_SDA     4
+#define I2C_SCL     5
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -86,6 +95,10 @@ typedef struct {
 
 /* ───────────────────────── Shared queue ─────────────────────── */
 static QueueHandle_t sensor_queue = NULL;
+
+/* ─────────────── Shared OLED data (ML → OLED) ──────────────── */
+static volatile float g_fused_r_m      = -1.0f;   /* <0 = no data yet */
+static volatile float g_fused_theta_deg = 0.0f;
 
 /* ───────────────── Normalization helpers ────────────────────── */
 static inline float norm_range(float r_m) {
@@ -483,12 +496,214 @@ static void ml_inference_task(void *arg)
         state.last_pred_r     = pred_r_m;
         state.last_pred_theta = pred_theta_deg;
 
+        /* ── Share with OLED task ── */
+        g_fused_r_m       = pred_r_m;
+        g_fused_theta_deg = pred_theta_deg;
+
         /* ── Print fused output ── */
         printf("FUSED,%.3f,%.1f,%lld,%lld\n",
                pred_r_m, pred_theta_deg,
                event.timestamp_ms, inference_us);
 
         vTaskDelay(pdMS_TO_TICKS(1));
+    }
+}
+
+/* ═════════════════════════════════════════════════════════════════
+ *  TASK 4 — OLED Display  (Core 0, Priority 2)
+ *
+ *  Minimal, clean display:
+ *    Left half:  directional arrow (0° = up, rotates with theta)
+ *    Right half: distance in cm (large text)
+ *
+ *  ┌──────────────────────────────────┐
+ *  │                                  │
+ *  │      ↗           2 3 4          │
+ *  │     /                            │
+ *  │    •              cm             │
+ *  │                                  │
+ *  └──────────────────────────────────┘
+ * ═════════════════════════════════════════════════════════════════*/
+
+/* Write a char into the _page[] framebuffer (no I2C yet) */
+static void buf_write_char(SSD1306_t *dev, int page, int seg, char ch)
+{
+    if (page < 0 || page >= dev->_pages || seg < 0 || seg + 8 > 128) return;
+    memcpy(&dev->_page[page]._segs[seg], font8x8_basic_tr[(uint8_t)ch], 8);
+}
+
+/* Write a string into the framebuffer */
+static void buf_write_str(SSD1306_t *dev, int page, int seg,
+                          const char *s, int len)
+{
+    for (int i = 0; i < len && s[i]; i++) {
+        buf_write_char(dev, page, seg + i * 8, s[i]);
+    }
+}
+
+/* Write a char at 2× vertical scale into the framebuffer (spans 2 pages) */
+static void buf_write_char_2x(SSD1306_t *dev, int page, int seg, char ch)
+{
+    if (page < 0 || page + 1 >= dev->_pages || seg < 0 || seg + 8 > 128) return;
+    const uint8_t *glyph = font8x8_basic_tr[(uint8_t)ch];
+    for (int col = 0; col < 8; col++) {
+        uint16_t stretched = 0;
+        for (int bit = 0; bit < 8; bit++) {
+            if (glyph[col] & (1 << bit)) {
+                stretched |= (0x03 << (bit * 2));
+            }
+        }
+        dev->_page[page]._segs[seg + col]     = (uint8_t)(stretched & 0xFF);
+        dev->_page[page + 1]._segs[seg + col] = (uint8_t)((stretched >> 8) & 0xFF);
+    }
+}
+
+/* Write a string at 2× height into the framebuffer */
+static void buf_write_str_2x(SSD1306_t *dev, int page, int seg,
+                             const char *s, int len)
+{
+    for (int i = 0; i < len && s[i]; i++) {
+        buf_write_char_2x(dev, page, seg + i * 8, s[i]);
+    }
+}
+
+/* Write a char at 2× width AND 2× height (16px wide × 16px tall, 2 pages) */
+static void buf_write_char_2x2(SSD1306_t *dev, int page, int seg, char ch)
+{
+    if (page < 0 || page + 1 >= dev->_pages || seg < 0 || seg + 16 > 128) return;
+    const uint8_t *glyph = font8x8_basic_tr[(uint8_t)ch];
+    for (int col = 0; col < 8; col++) {
+        uint16_t stretched = 0;
+        for (int bit = 0; bit < 8; bit++) {
+            if (glyph[col] & (1 << bit)) {
+                stretched |= (0x03 << (bit * 2));
+            }
+        }
+        uint8_t upper = (uint8_t)(stretched & 0xFF);
+        uint8_t lower = (uint8_t)((stretched >> 8) & 0xFF);
+        /* Each column is doubled in width */
+        dev->_page[page]._segs[seg + col * 2]         = upper;
+        dev->_page[page]._segs[seg + col * 2 + 1]     = upper;
+        dev->_page[page + 1]._segs[seg + col * 2]     = lower;
+        dev->_page[page + 1]._segs[seg + col * 2 + 1] = lower;
+    }
+}
+
+/* Write a string at 2×2 scale (16px wide × 16px tall per char) */
+static void buf_write_str_2x2(SSD1306_t *dev, int page, int seg,
+                              const char *s, int len)
+{
+    for (int i = 0; i < len && s[i]; i++) {
+        buf_write_char_2x2(dev, page, seg + i * 16, s[i]);
+    }
+}
+
+/* Draw the directional arrow into the framebuffer.
+ * theta_deg: 0 = up, positive = right, negative = left.
+ * Arrow is drawn from a centre point with a shaft + arrowhead. */
+static void buf_draw_arrow(SSD1306_t *dev, int cx, int cy,
+                           float theta_deg, int shaft_len)
+{
+    float rad = theta_deg * (float)M_PI / 180.0f;
+    float s   = sinf(rad);
+    float c   = cosf(rad);
+
+    /* Tip of the arrow (forward) */
+    int tip_x = cx + (int)(shaft_len * s);
+    int tip_y = cy - (int)(shaft_len * c);
+
+    /* Tail (opposite direction, short) */
+    int tail_x = cx - (int)((shaft_len / 3) * s);
+    int tail_y = cy + (int)((shaft_len / 3) * c);
+
+    /* Main shaft */
+    _ssd1306_line(dev, tail_x, tail_y, tip_x, tip_y, false);
+
+    /* Arrowhead: two wings at ±35° from the shaft, length ~8px */
+    float head_len = 8.0f;
+    float wing_angle = 35.0f * (float)M_PI / 180.0f;
+
+    /* Left wing */
+    float la = rad + (float)M_PI - wing_angle;
+    int lx = tip_x + (int)(head_len * sinf(la));
+    int ly = tip_y - (int)(head_len * cosf(la));
+    _ssd1306_line(dev, tip_x, tip_y, lx, ly, false);
+
+    /* Right wing */
+    float ra = rad + (float)M_PI + wing_angle;
+    int rx = tip_x + (int)(head_len * sinf(ra));
+    int ry = tip_y - (int)(head_len * cosf(ra));
+    _ssd1306_line(dev, tip_x, tip_y, rx, ry, false);
+
+    /* Small dot at the centre (origin) */
+    _ssd1306_pixel(dev, cx,     cy,     false);
+    _ssd1306_pixel(dev, cx + 1, cy,     false);
+    _ssd1306_pixel(dev, cx,     cy + 1, false);
+    _ssd1306_pixel(dev, cx + 1, cy + 1, false);
+}
+
+static void oled_display_task(void *arg)
+{
+    /* ── 1. Initialise OLED ── */
+    SSD1306_t oled;
+    i2c_master_init(&oled, I2C_SDA, I2C_SCL, -1);   /* no reset pin */
+    ssd1306_init(&oled, 128, 64);
+    ssd1306_contrast(&oled, 0xFF);
+    ssd1306_clear_screen(&oled, false);
+
+    ESP_LOGI(TAG, "oled_display_task running on core %d", xPortGetCoreID());
+
+    char cm_buf[16];
+
+    /* ── 2. Main render loop ── */
+    for (;;) {
+        float r_m   = g_fused_r_m;
+        float theta = g_fused_theta_deg;
+
+        /* ── Clear framebuffer ── */
+        for (int p = 0; p < 8; p++) {
+            memset(oled._page[p]._segs, 0x00, 128);
+        }
+
+        if (r_m < 0.0f) {
+            /* No data yet */
+            buf_write_str(&oled, 3, 28, "WAIT...", 7);
+        } else {
+            /* ──── ARROW (left half, centred at 30,28) ──── */
+            buf_draw_arrow(&oled, 30, 26, theta, 22);
+
+            /* ──── Degree text under arrow (small, page 7) ──── */
+            char deg_buf[10];
+            snprintf(deg_buf, sizeof(deg_buf), "%+.0f", (double)theta);
+            int deg_len = strlen(deg_buf);
+            int deg_x = 30 - ((deg_len + 1) * 8) / 2;  /* centre under arrow (incl °) */
+            if (deg_x < 0) deg_x = 0;
+            buf_write_str(&oled, 7, deg_x, deg_buf, deg_len);
+            /* Tiny ° glyph: a 4-pixel circle at top of next char cell */
+            int deg_sym_x = deg_x + deg_len * 8;
+            if (deg_sym_x + 4 <= 128) {
+                static const uint8_t deg_glyph[4] = {0x06, 0x09, 0x09, 0x06};
+                memcpy(&oled._page[7]._segs[deg_sym_x], deg_glyph, 4);
+            }
+
+            /* ──── DISTANCE in cm (right half, 2×2 scale) ──── */
+            int cm = (int)(r_m * 100.0f + 0.5f);
+            if (cm > 999) cm = 999;
+            snprintf(cm_buf, sizeof(cm_buf), "%3d", cm);
+
+            /* Draw cm value large (2×2 = 16px wide × 16px tall) */
+            int cm_len = strlen(cm_buf);
+            int cm_x = 64 + (64 - cm_len * 16) / 2;  /* centre in right half */
+            buf_write_str_2x2(&oled, 2, cm_x, cm_buf, cm_len);
+
+            /* "cm" label below the number */
+            buf_write_str(&oled, 5, cm_x + (cm_len * 16) / 2 - 8, "cm", 2);
+        }
+
+        /* ── Flush entire framebuffer to display in one shot ── */
+        ssd1306_show_buffer(&oled);
+
+        vTaskDelay(pdMS_TO_TICKS(150));
     }
 }
 
@@ -525,5 +740,9 @@ extern "C" void app_main(void)
     xTaskCreatePinnedToCore(ml_inference_task,   "ml_infer",
                             16384, NULL, 3, NULL, 1);
 
-    ESP_LOGI(TAG, "All tasks started. Core 0: WiFi/FTM. Core 1: UART + ML.");
+    /* --- Core 0: OLED display (lowest priority; never stalls radio) --- */
+    xTaskCreatePinnedToCore(oled_display_task,   "oled",
+                            4096, NULL, 2, NULL, 0);
+
+    ESP_LOGI(TAG, "All tasks started. Core 0: WiFi/FTM + OLED. Core 1: UART + ML.");
 }

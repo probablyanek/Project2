@@ -1,0 +1,20 @@
+Command: cmake -G Ninja -DPYTHON_DEPS_CHECKED=1 -DPYTHON=C:\Espressif\python_env\idf5.5_py3.10_env\Scripts\python.exe -DESP_PLATFORM=1 -DCCACHE_ENABLE=1 C:\Users\Anek\Desktop\Project2\isac_polar_ml\isac_polar_ml
+CMake Error at C:/Espressif/frameworks/esp-idf-v5.5.3/tools/cmake/component.cmake:494 (add_library):
+  Cannot find source file:
+
+    C:/Users/Anek/Desktop/Project2/isac_polar_ml/isac_polar_ml/managed_components/espressif__esp-nn/src/common/esp_nn_common_functions_esp32s3.S
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm
+  .ccm .cxxm .c++m .h .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90
+  .f95 .f03 .hip .ispc
+Call Stack (most recent call first):
+  managed_components/espressif__esp-nn/CMakeLists.txt:49 (idf_component_register)
+
+
+CMake Error at C:/Espressif/frameworks/esp-idf-v5.5.3/tools/cmake/component.cmake:494 (add_library):
+  No SOURCES given to target: __idf_espressif__esp-nn
+Call Stack (most recent call first):
+  managed_components/espressif__esp-nn/CMakeLists.txt:49 (idf_component_register)
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.
